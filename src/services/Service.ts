@@ -1,35 +1,34 @@
-import React from 'react';
-import './App.css';
+import axios from "axios";
 
-import Navbar from './components/navBar/NavBar';
-import Footer from './components/footer/Footer';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './pages/login/Login';
-import Cadastro from './pages/cadastro/Cadastro';
-import Home from './pages/home/Home';
-import { AuthProvider } from './contexts/AuthContext';
-import ListaTemas from './components/temas/listaTemas/ListaTemas';
+const api = axios.create({
+  baseURL: 'https://blog-pessoal-6kfx.onrender.com/'
+})
 
-
-function App() {
-  return (
-    <>
-    <AuthProvider>
-        <BrowserRouter>
-          <Navbar />
-          <div className='min-h-[80vh]'>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/cadastro" element={<Cadastro />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/temas" element={<ListaTemas />} />
-            </Routes>
-          </div>
-          <Footer />
-        </BrowserRouter>
-        </AuthProvider>
-    </>
-  );
+export const cadastrarUsuario = async(url: string, dados: Object, setDados: Function) => {
+  const resposta = await api.post(url, dados)
+  setDados(resposta.data)
 }
-export default App;
+
+export const login = async(url: string, dados: Object, setDados: Function) => {
+  const resposta = await api.post(url, dados)
+  setDados(resposta.data)
+}
+
+export const buscar = async(url: string, setDados: Function, header: Object) => {
+  const resposta = await api.get(url, header)
+  setDados(resposta.data)
+}
+
+export const cadastrar = async(url: string, dados: Object, setDados: Function, header: Object) => {
+  const resposta = await api.post(url, dados, header)
+  setDados(resposta.data)
+}
+
+export const atualizar = async(url: string, dados: Object, setDados: Function, header: Object) => {
+  const resposta = await api.put(url, dados, header)
+  setDados(resposta.data)
+}
+
+export const deletar = async(url: string, header: Object) => {
+  await api.delete(url, header)
+}
